@@ -1,6 +1,15 @@
 package com.pluralsight;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Scanner;
+
+
+
+
 
 public class AccountingLedgerApp {
     public static void main(String[] args) {
@@ -28,18 +37,19 @@ public class AccountingLedgerApp {
 
         switch (inputforhomescreeen) {
             case "D":
-                System.out.println(" Displaying All Transactions ");
+                System.out.println(" ======== Deposit into your Account ===== ");
+                adddedeposit();
                 break;
             case "P":
-                System.out.println("Make A payment ");
+                System.out.println(" ++++++++++++ Make A payment ++++++++++++ ");
                 break;
 
             case "L":
                 ledger();
                 break;
 
-            case"X":
-                System.out.println("You Have Exited the Application GOOD BYE ");
+            case "X":
+                exitapplication();
                 break;
 
 
@@ -49,7 +59,6 @@ public class AccountingLedgerApp {
         System.out.println();
 
 
-
     }
 
 
@@ -57,21 +66,21 @@ public class AccountingLedgerApp {
 
         Scanner ledgerscanner = new Scanner(System.in);
         System.out.println(
-                 "A - Display All Transactions \n " +
-                 "D - Display Only Positive entries (Deposits)\n " +
-                 "P - Display Only Negative entries\n " +
-                 "R - Go to Reports Screen\n " +
-                 "H - Return to Home\n ");
+                "A - Display All Transactions \n " +
+                        "D - Display Only Positive entries (Deposits)\n " +
+                        "P - Display Only Negative entries\n " +
+                        "R - Go to Reports Screen\n " +
+                        "H - Return to Home\n ");
         System.out.print("Enter Your Option Here: ");
         String ledgerinput = ledgerscanner.nextLine().toUpperCase();
-        switch (ledgerinput){
+        switch (ledgerinput) {
             case "A":
                 System.out.println("=========Here are all the transactions==========");
                 break;
             case "D":
                 System.out.println("Positive Deposits ");
                 break;
-            case"P":
+            case "P":
                 System.out.println("Negative Entries");
                 break;
             case "R":
@@ -83,12 +92,10 @@ public class AccountingLedgerApp {
                 break;
 
 
-
         }
         System.out.println("\nPress ENTER to continue...\n");
         ledgerscanner.nextLine();
         System.out.println();
-
 
 
     }
@@ -101,43 +108,115 @@ public class AccountingLedgerApp {
                         "3 - Year to Date\n " +
                         "4 - Previous Year \n " +
                         "5 - Search by Vendor\n " +
-                        "0 - Back to Ledger Option\n ");
+                        "0 - Back to Ledger Option\n " +
+                        "H - Return Home App\n ");
+
+
         System.out.print("Enter Your Option Here: ");
-        String reportsinput = reportsscanner.nextLine();
-        switch (reportsinput){
-            case 1:
+        String reportsinput = reportsscanner.nextLine().toUpperCase();
+        switch (reportsinput) {
+            case "1":
 
                 break;
 
-            case 2:
+            case "2":
 
                 break;
 
-            case 3:
+            case "3":
 
                 break;
 
-            case 4:
+            case "4":
 
                 break;
 
-            case 5:
+            case "5":
 
                 break;
 
-            case 0:
+            case "0":
+                ledger();
+                break;
+            case "H":
+            case "7":
                 mainmenuselector();
                 break;
+        }
+
+        System.out.println("\nPress ENTER to continue...\n");
+        reportsscanner.nextLine();
+        System.out.println();
+
+
+    }
+
+
+    public static void exitapplication() {
+        System.out.println("You Have Exited the Application GOOD BYE ");
+        System.exit(0);
+    }
+
+
+
+    public static void adddedeposit() {
+
+        Scanner adddeposit = new Scanner(System.in);
+
+
+        LocalDate date = LocalDate.now();
+        LocalTime time = LocalTime.now();
+
+        System.out.print("What is the Reason for the Deposit: ?");
+        String description = adddeposit.nextLine();
+
+        System.out.print("Enter vendor:? ");
+        String vendor = adddeposit.nextLine();
+
+        System.out.print("What is the Amount:? ");
+        float amount = adddeposit.nextFloat();
+
+
+        transactions deposit = new transactions(date, time, description , vendor, amount);
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter("src/main/resources/transaction.csv",true));
+            writer.write(deposit.tocsv());
+            writer.newLine();
+            writer.close();
+            System.out.println("Deposit Added Successfully!");
+
+        } catch (IOException e) {
+            System.out.println(" Unexpected Error Has Occurred ");
+            e.printStackTrace();
 
         }
     }
 
 
-    public static void exitapplication(){
+
 
     }
 
 
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

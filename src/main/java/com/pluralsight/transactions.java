@@ -19,6 +19,7 @@ public transactions (LocalDate date,LocalTime time, String discription, String v
     this.ammount = ammount;
 
 
+
 }
 
     public LocalDate getdate() {
@@ -60,6 +61,15 @@ public transactions (LocalDate date,LocalTime time, String discription, String v
     public void setAmmount(double ammount) {
         this.ammount = ammount;
     }
+
+    // this is for transaction file for bufferdwriter to access the calss check and write it //
+
+
+    public String tocsv(){
+    return date + "|" + time + "|" + discription + "|" + vendor + "|" + ammount;
+    }
+
+
 }
 
 /// /date|time|description|vendor|amount
