@@ -28,10 +28,10 @@ public class AccountingLedgerApp {
         Scanner appscanner = new Scanner(System.in);
         System.out.println(" How would you like to Continue? ");
         System.out.println(
-                "D - Add A Deposit To Your Account\n " +
-                        "P - Make Payment (Debit)\n" +
-                        "L - Ledger\n " +
-                        "X - EXIT APP\n");
+                           " D - Add A Deposit To Your Account\n"+
+                           " P - Make Payment (Debit)\n"+
+                           " L - Ledger\n"+
+                           " X - EXIT APP\n");
         System.out.print("Enter Your option Here: ");
         String inputforhomescreeen = appscanner.nextLine().toUpperCase();
 
@@ -66,12 +66,12 @@ public class AccountingLedgerApp {
 
         Scanner ledgerscanner = new Scanner(System.in);
         System.out.println(
-                "A - Display All Transactions \n " +
-                        "D - Display Only Positive entries (Deposits)\n " +
-                        "P - Display Only Negative entries\n " +
-                        "R - Go to Reports Screen\n " +
-                        "H - Return to Home\n ");
-        System.out.print("Enter Your Option Here: ");
+                "A - Display All Transactions\n"+
+                        "D - Display Only Positive entries (Deposits)\n"+
+                        "P - Display Only Negative entries\n"+
+                        "R - Go to Reports Screen\n"+
+                        "H - Return to Home\n");
+        System.out.print("Enter Your Option Here:");
         String ledgerinput = ledgerscanner.nextLine().toUpperCase();
         switch (ledgerinput) {
             case "A":
@@ -103,13 +103,13 @@ public class AccountingLedgerApp {
     public static void reports() {
         Scanner reportsscanner = new Scanner(System.in);
         System.out.println(
-                "1 - Month to Date\n " +
+                "1 - Month to Date\n" +
                         "2 - Previous Month\n" +
-                        "3 - Year to Date\n " +
-                        "4 - Previous Year \n " +
-                        "5 - Search by Vendor\n " +
-                        "0 - Back to Ledger Option\n " +
-                        "H - Return Home App\n ");
+                        "3 - Year to Date\n" +
+                        "4 - Previous Year \n" +
+                        "5 - Search by Vendor\n" +
+                        "0 - Back to Ledger Option\n" +
+                        "H - Return Home App\n");
 
 
         System.out.print("Enter Your Option Here: ");
@@ -178,6 +178,8 @@ public class AccountingLedgerApp {
 
 
         transactions deposit = new transactions(date, time, description , vendor, amount);
+        amount = Math.round(amount * 100.0f)/100.0f;/// rounded the float here
+
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter("src/main/resources/transaction.csv",true));
             writer.write(deposit.tocsv());
