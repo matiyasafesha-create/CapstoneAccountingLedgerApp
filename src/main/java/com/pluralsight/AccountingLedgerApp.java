@@ -1,10 +1,10 @@
 package com.pluralsight;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Scanner;
 
 
@@ -12,9 +12,6 @@ import java.util.Scanner;
 
 
 public class AccountingLedgerApp {
-    public static void main(String[] args) {
-        run();
-    }
 
     public static void run() {
         System.out.println("========= Welcome to the Accounting Ledger App ============ \n");
@@ -28,10 +25,10 @@ public class AccountingLedgerApp {
         Scanner appscanner = new Scanner(System.in);
         System.out.println(" How would you like to Continue? ");
         System.out.println(
-                           " D - Add A Deposit To Your Account\n"+
-                           " P - Make Payment (Debit)\n"+
-                           " L - Ledger\n"+
-                           " X - EXIT APP\n");
+                " D - Add A Deposit To Your Account\n" +  // done///
+                        " P - Make Payment (Debit)\n" +
+                        " L - Ledger\n" +
+                        " X - EXIT APP\n");                       ///done
         System.out.print("Enter Your option Here: ");
         String inputforhomescreeen = appscanner.nextLine().toUpperCase();
 
@@ -42,6 +39,7 @@ public class AccountingLedgerApp {
                 break;
             case "P":
                 System.out.println(" ++++++++++++ Make A payment ++++++++++++ ");
+                makeapayment();
                 break;
 
             case "L":
@@ -66,10 +64,10 @@ public class AccountingLedgerApp {
 
         Scanner ledgerscanner = new Scanner(System.in);
         System.out.println(
-                "A - Display All Transactions\n"+
-                        "D - Display Only Positive entries (Deposits)\n"+
-                        "P - Display Only Negative entries\n"+
-                        "R - Go to Reports Screen\n"+
+                "A - Display All Transactions\n" +
+                        "D - Display Only Positive entries (Deposits)\n" +
+                        "P - Display Only Negative entries\n" +
+                        "R - Go to Reports Screen\n" +
                         "H - Return to Home\n");
         System.out.print("Enter Your Option Here:");
         String ledgerinput = ledgerscanner.nextLine().toUpperCase();
@@ -156,9 +154,27 @@ public class AccountingLedgerApp {
         System.out.println("You Have Exited the Application GOOD BYE ");
         System.exit(0);
     }
+/// /Realized instead of rewriting the method again and again i will just create one method and call it
 
 
+    /// //++++++++++++++++++++++++++++METHOD FOR WRITING ON A FILE +++++++++++++++++++++++++///////
 
+    public static void callingcsvtransaction(transactions t) {  /// t is how the method receive
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter("src/main/resources/transaction.csv", true));
+            writer.write("Date|Time|Description|Amount"); ///HEADER???
+            writer.newLine();
+            writer.write(t.tocsv());
+            writer.close();
+
+        } catch (IOException e) {
+            System.out.println(" Unexpected Error Has Occurred ");
+            e.printStackTrace();
+
+        }
+    }
+
+    /// ++++++++++++++++++++++++++++++++++++++++++ ADDING DEPOSIT ++++++++++++++++++++++++++++++++++++++++++++++
     public static void adddedeposit() {
 
         Scanner adddeposit = new Scanner(System.in);
@@ -170,34 +186,82 @@ public class AccountingLedgerApp {
         System.out.print("What is the Reason for the Deposit: ?");
         String description = adddeposit.nextLine();
 
-        System.out.print("Enter vendor:? ");
+        System.out.print("Who is the Source of this Deposit: ? ");
         String vendor = adddeposit.nextLine();
 
         System.out.print("What is the Amount:? ");
         float amount = adddeposit.nextFloat();
 
 
-        transactions deposit = new transactions(date, time, description , vendor, amount);
-        amount = Math.round(amount * 100.0f)/100.0f;/// rounded the float here
+        transactions deposit = new transactions(date, time, description, vendor, amount);
+        amount = Math.round(amount * 100.0f) / 100.0f;/// rounded the float here
 
+        System.out.println("Deposit Added Successfully!");
+        System.out.println("Current Time: " + time);
+        System.out.println("Current Date: " + date);
+        callingcsvtransaction(deposit);
+
+    }
+
+    ///  ===============================MAKE A PAYMENT============================================/////
+    public static void makeapayment() {
+
+        Scanner makeapayemtn = new Scanner(System.in);
+
+        LocalDate date = LocalDate.now();
+        LocalTime time = LocalTime.now();
+
+        System.out.print("What is the Reason for the Payment:?");
+        String reasonunput = makeapayemtn.nextLine();
+
+        System.out.print("WHo is the vendor:?");
+        String vendorinput = makeapayemtn.nextLine();
+
+        System.out.print("Enter the Amount you want to Debit:?");
+        float debtinput = makeapayemtn.nextFloat();
+
+        debtinput = Math.round(debtinput * 100.f) / 100.f;
+
+
+        transactions payment = new transactions(date, time, reasonunput, vendorinput, debtinput);
+        System.out.println("PAYMENT WAS SUCCESSFUL!");
+        System.out.println("Time:" + time);
+        System.out.println("Date:" + date);
+        callingcsvtransaction(payment);
+
+    }
+                                     /// / ++++++++++++++++++++++++++++++++reader is complete+++++++++++++++++++++++++++++++++++++++++++++++++ /////
+    public static HashMap<String, transactions> loadledger() {
+        HashMap<String, transactions> ledger = new HashMap<>();
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter("src/main/resources/transaction.csv",true));
-            writer.write(deposit.tocsv());
-            writer.newLine();
-            writer.close();
-            System.out.println("Deposit Added Successfully!");
+            BufferedReader bufferedReader = new BufferedReader(new FileReader("src/main/resources/transaction.csv"));
+            String input;
 
-        } catch (IOException e) {
-            System.out.println(" Unexpected Error Has Occurred ");
-            e.printStackTrace();
+            while ((input = bufferedReader.readLine()) != null) {
+                String[] tokens = input.split("\\|");
+
+                LocalDate date = LocalDate.parse(tokens[0]);
+                LocalTime time = LocalTime.parse(tokens[1]);
+                String description = tokens[2];
+                String vendor = tokens[3];
+                Float amount = Float.parseFloat(tokens[4]);
+
+                ledger.put(description, new transactions(date, time, description, vendor, amount));
+
+            }
+                bufferedReader.close();
+
+            }catch(IOException e) {
+                e.printStackTrace();
+
+            }
+            return ledger;
+
 
         }
     }
 
 
-
-
-    }
 
 
 

@@ -11,12 +11,12 @@ private String vendor ;
 private double ammount;
 
 
-public transactions (LocalDate date,LocalTime time, String discription, String vendor, double ammount){
+public transactions (LocalDate date,LocalTime time, String discription, String vendor, double amount){
     this.date = date;
     this.time = time;
     this.discription = discription;
     this.vendor = vendor;
-    this.ammount = ammount;
+    this.ammount = amount;
 
 
 
