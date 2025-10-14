@@ -3,6 +3,7 @@ package com.pluralsight;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -74,12 +75,23 @@ public class AccountingLedgerApp {
         switch (ledgerinput) {
             case "A":
                 System.out.println("=========Here are all the transactions==========");
+               viewAllLedger();
                 break;
             case "D":
-                System.out.println("Positive Deposits ");
+                System.out.println("Credit Entries");
+                System.out.println();
+               ArrayList<transactions> positiveentry = loadledger();
+               showcreditpositive(positiveentry);
+
+
                 break;
             case "P":
-                System.out.println("Negative Entries");
+                System.out.println("Debit Entries");
+                System.out.println();
+                ArrayList<transactions> negativeentery = loadledger();
+                showdebitesnegative(negativeentery);
+
+
                 break;
             case "R":
                 System.out.println("Reports Screen");
@@ -162,7 +174,7 @@ public class AccountingLedgerApp {
     public static void callingcsvtransaction(transactions t) {  /// t is how the method receive
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter("src/main/resources/transaction.csv", true));
-            writer.write("Date|Time|Description|Amount"); ///HEADER???
+           /// writer.write("Date|Time|Description|Amount"); ///HEADER???
             writer.newLine();
             writer.write(t.tocsv());
             writer.close();
@@ -183,17 +195,17 @@ public class AccountingLedgerApp {
         LocalDate date = LocalDate.now();
         LocalTime time = LocalTime.now();
 
-        System.out.print("What is the Reason for the Deposit: ?");
+        System.out.print("What is the Reason for the Deposit Enter a brief Description: ?");
         String description = adddeposit.nextLine();
 
-        System.out.print("Who is the Source of this Deposit: ? ");
+        System.out.print("Enter is the Source/Vendor of the Deposit:? ");
         String vendor = adddeposit.nextLine();
 
-        System.out.print("What is the Amount:? ");
+        System.out.print("Enter is the Amount:? ");
         float amount = adddeposit.nextFloat();
 
 
-        transactions deposit = new transactions(date, time, description, vendor, amount);
+        transactions deposit = new transactions(date, time, description, vendor, + amount);
         amount = Math.round(amount * 100.0f) / 100.0f;/// rounded the float here
 
         System.out.println("Deposit Added Successfully!");
@@ -211,31 +223,36 @@ public class AccountingLedgerApp {
         LocalDate date = LocalDate.now();
         LocalTime time = LocalTime.now();
 
-        System.out.print("What is the Reason for the Payment:?");
+        System.out.print("Enter the Reason for the Payment:?");
         String reasonunput = makeapayemtn.nextLine();
 
-        System.out.print("WHo is the vendor:?");
+        System.out.print("Enter the vendor/recipient:?");
         String vendorinput = makeapayemtn.nextLine();
 
-        System.out.print("Enter the Amount you want to Debit:?");
+        System.out.print("Enter the Amount you want to Debit$:?");
         float debtinput = makeapayemtn.nextFloat();
 
         debtinput = Math.round(debtinput * 100.f) / 100.f;
 
 
-        transactions payment = new transactions(date, time, reasonunput, vendorinput, debtinput);
+        transactions payment = new transactions(date, time, reasonunput, vendorinput, -debtinput);
         System.out.println("PAYMENT WAS SUCCESSFUL!");
         System.out.println("Time:" + time);
         System.out.println("Date:" + date);
+        System.out.println("Amount Paid" + debtinput);
         callingcsvtransaction(payment);
 
     }
-                                     /// / ++++++++++++++++++++++++++++++++reader is complete+++++++++++++++++++++++++++++++++++++++++++++++++ /////
-    public static HashMap<String, transactions> loadledger() {
-        HashMap<String, transactions> ledger = new HashMap<>();
+    ////////////// / ++++++++++++++++++++++++++++++++reader is complete+++++++++++++++++++++++++++++++++++++++++++++++++ /////
+    public static ArrayList <transactions> loadledger() {
+        ArrayList <transactions> ledger = new ArrayList<transactions>();
+
+
         try {
             BufferedReader bufferedReader = new BufferedReader(new FileReader("src/main/resources/transaction.csv"));
             String input;
+
+            bufferedReader.readLine();
 
             while ((input = bufferedReader.readLine()) != null) {
                 String[] tokens = input.split("\\|");
@@ -246,7 +263,8 @@ public class AccountingLedgerApp {
                 String vendor = tokens[3];
                 Float amount = Float.parseFloat(tokens[4]);
 
-                ledger.put(description, new transactions(date, time, description, vendor, amount));
+
+                ledger.add(new transactions(date,time,description,vendor,amount));
 
             }
                 bufferedReader.close();
@@ -259,8 +277,50 @@ public class AccountingLedgerApp {
 
 
         }
+
+    public static void viewAllLedger(){
+        ArrayList<transactions> ledger = loadledger();
+
+        System.out.println("======== ALL TRANSACTIONS ========");
+
+        for (transactions viewallitem : ledger) {
+            System.out.println(viewallitem);
+        }
+
+        System.out.println("==================================");
     }
 
+    public static void showdebitesnegative(ArrayList<transactions>ledger){
+        for (transactions debit : ledger){
+            if (debit.getamount() < 0 ){
+               displayalllistfromclass(debit);
+            }
+        }
+
+
+    }
+
+    public static void showcreditpositive(ArrayList<transactions> ledger){
+        for(transactions credit : ledger){
+            if(credit.getamount() > 0 ){
+                displayalllistfromclass(credit);
+            }
+        }
+    }
+
+         public static void displayalllistfromclass(transactions t){
+             System.out.printf(t.getdate() + "|" + t.getTime() + "|" + t.getdiscription() + "| " +
+                     t.getvendor() + "|" + t.getamount() + "\n");
+         }
+
+         public static void serachbymonthtodate(ArrayList<transactions ledger>){
+        for (transactions search  : ledger){
+            if(search.getdate() == )
+
+        }
+         }
+
+}
 
 
 

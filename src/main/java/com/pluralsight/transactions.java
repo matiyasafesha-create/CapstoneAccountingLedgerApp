@@ -6,17 +6,17 @@ public class transactions {
 
 private LocalDate date ;
 private LocalTime time;
-private String discription ;
+private String description ;
 private String vendor ;
-private double ammount;
+private double amount;
 
 
 public transactions (LocalDate date,LocalTime time, String discription, String vendor, double amount){
     this.date = date;
     this.time = time;
-    this.discription = discription;
+    this.description= discription;
     this.vendor = vendor;
-    this.ammount = amount;
+    this.amount = amount;
 
 
 
@@ -39,11 +39,11 @@ public transactions (LocalDate date,LocalTime time, String discription, String v
     }
 
     public String getdiscription() {
-        return discription;
+        return description;
     }
 
     public void setdiscription(String discription) {
-        this.discription = discription;
+        this.description= discription;
     }
 
     public String getvendor() {
@@ -54,20 +54,28 @@ public transactions (LocalDate date,LocalTime time, String discription, String v
         this.vendor = vendor;
     }
 
-    public double getAmmount() {
-        return ammount;
+    public double getamount() {
+        return amount;
     }
 
-    public void setAmmount(double ammount) {
-        this.ammount = ammount;
+    public void setamount(double amount) {
+        this.amount = amount;
     }
 
     // this is for transaction file for bufferdwriter to access the calss check and write it //
 
 
     public String tocsv(){
-    return date + "|" + time + "|" + discription + "|" + vendor + "|" + ammount;
+    return date + "|" + time + "|" + description+ "|" + vendor + "|" + amount;
     }
+/// /need to learn more on this and what it does
+    @Override
+    public String toString() {
+        return String.format(
+                "DATE: %s |TIME: %s | DESCRIPTION: %s | VENDOR: %s |Amount: $%.2f",
+                date, time, description, vendor, amount);
+    }
+
 
 
 }
