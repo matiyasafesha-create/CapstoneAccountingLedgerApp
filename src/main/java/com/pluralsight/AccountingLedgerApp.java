@@ -1,6 +1,7 @@
 package com.pluralsight;
 
 import java.io.*;
+import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -55,7 +56,7 @@ public class AccountingLedgerApp {
         }
         System.out.println("\nPress ENTER to continue...\n");
         appscanner.nextLine();
-        System.out.println();
+       System.out.println();
 
 
     }
@@ -70,6 +71,9 @@ public class AccountingLedgerApp {
                         "P - Display Only Negative entries\n" +
                         "R - Go to Reports Screen\n" +
                         "H - Return to Home\n");
+
+
+
         System.out.print("Enter Your Option Here:");
         String ledgerinput = ledgerscanner.nextLine().toUpperCase();
         switch (ledgerinput) {
@@ -103,9 +107,6 @@ public class AccountingLedgerApp {
 
 
         }
-        System.out.println("\nPress ENTER to continue...\n");
-        ledgerscanner.nextLine();
-        System.out.println();
 
 
     }
@@ -118,6 +119,7 @@ public class AccountingLedgerApp {
                         "3 - Year to Date\n" +
                         "4 - Previous Year \n" +
                         "5 - Search by Vendor\n" +
+                        "6 - Custom Search \n" +
                         "0 - Back to Ledger Option\n" +
                         "H - Return Home App\n");
 
@@ -147,6 +149,11 @@ public class AccountingLedgerApp {
                 String searchvendorinput = reportsscanner.nextLine();
                 ArrayList<transactions> ledger = loadledger();  // this loads all transactions in every case listed
                 serachbyvendor(ledger, searchvendorinput);
+                break;
+
+            case "6":
+                System.out.println("======================= Custom Search by dates ============================");
+                customsearch();
                 break;
 
             case "0":
@@ -391,10 +398,6 @@ public class AccountingLedgerApp {
 
         }
     }
-
-
-
-
 ////++++++++++++++++++++++++++++++++++++++++++++search by vendor +++++++++++++++++++++++++++++++++++++++//////
     public static void serachbyvendor(ArrayList<transactions> ledger, String serachbyvendorinput) {         // String Search by
         for (transactions search : ledger) {
@@ -402,6 +405,38 @@ public class AccountingLedgerApp {
                 displayalllistfromclass(search);
             }
         }
+    }
+
+    public static void customsearch(){
+            ArrayList<transactions> reports = loadledger();
+            Scanner customscanner = new Scanner(System.in);
+
+
+        System.out.println("Enter Start Date (yyyy-mm-dd):");
+        String startdateinput = customscanner.nextLine();
+        System.out.println("Enter End Date (yyyy-mm-dd):");
+        String enddateinput = customscanner.nextLine();
+
+
+
+        LocalDate startdaate = LocalDate.parse(startdateinput);
+        LocalDate enddate = LocalDate.parse(enddateinput);
+
+
+
+
+    for (transactions search : reports){
+        LocalDate classdate = search.getdate();
+
+        if(!classdate.isBefore(startdaate) && !classdate.isAfter(enddate)){
+            displayalllistfromclass(search);//matching results shown
+            System.out.println(search);  // move inside to show matching record only
+        }
+        }
+
+
+
+
     }
 
 
