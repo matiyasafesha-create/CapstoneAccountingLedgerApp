@@ -275,7 +275,7 @@ public class AccountingLedgerApp {
                 LocalTime time = LocalTime.parse(tokens[1]);
                 String description = tokens[2];
                 String vendor = tokens[3];
-                Float amount = Float.parseFloat(tokens[4]);
+                double amount = Float.parseFloat(tokens[4]);
 
 
                 ledger.add(new transactions(date, time, description, vendor, amount));
@@ -408,35 +408,40 @@ public class AccountingLedgerApp {
     }
 
     public static void customsearch(){
-            ArrayList<transactions> reports = loadledger();
+           ArrayList<transactions> reports = loadledger();
             Scanner customscanner = new Scanner(System.in);
 
 
-        System.out.println("Enter Start Date (yyyy-mm-dd):");
+        System.out.print("Enter Start Date (yyyy-mm-dd):");
         String startdateinput = customscanner.nextLine();
-        System.out.println("Enter End Date (yyyy-mm-dd):");
+        System.out.print("Enter End Date (yyyy-mm-dd):");
         String enddateinput = customscanner.nextLine();
+        System.out.print("Enter the Description:");
+        String descriptioninput = customscanner.nextLine();
+        System.out.print("Enter Vendor:");
+        String vendorinput = customscanner.nextLine();
+        System.out.print("Enter Amount:");
+        double amountinput = customscanner.nextFloat();
 
-
-
-        LocalDate startdaate = LocalDate.parse(startdateinput);
-        LocalDate enddate = LocalDate.parse(enddateinput);
-
-
+        LocalDate startdaate = null;                                   // LocalDate.parse(startdateinput);
+        LocalDate enddate = null;                                      //LocalDate.parse(enddateinput);
 
 
     for (transactions search : reports){
         LocalDate classdate = search.getdate();
+        String description = search.getdiscription();
+        String vendor = search.getvendor();
+      double amount = search.getamount();
 
-        if(!classdate.isBefore(startdaate) && !classdate.isAfter(enddate)){
+        if(!classdate.isBefore(startdaate) && !classdate.isAfter(enddate) &&
+                description.contains(descriptioninput) && vendor.contains(vendorinput)
+                && amount == (amountinput) ){
             displayalllistfromclass(search);//matching results shown
             System.out.println(search);  // move inside to show matching record only
+        }else {
+            System.out.println(" WE couldn't find a match please enter it again!! ");
         }
         }
-
-
-
-
     }
 
 
@@ -444,7 +449,7 @@ public class AccountingLedgerApp {
 
 
 
-
+//2024-09-05   |07:32:18.944752300|      Freelance Project Payment     |Upwork|      1350.00
 
 
 

@@ -11,10 +11,10 @@ private String vendor ;
 private double amount;
 
 
-public transactions (LocalDate date,LocalTime time, String discription, String vendor, double amount){
+public transactions (LocalDate date,LocalTime time, String description, String vendor, double amount){
     this.date = date;
     this.time = time;
-    this.description= discription;
+    this.description= description;
     this.vendor = vendor;
     this.amount = amount;
 
@@ -68,7 +68,7 @@ public transactions (LocalDate date,LocalTime time, String discription, String v
     public String tocsv(){
     return date + "|" + time + "|" + description+ "|" + vendor + "|" + amount;
     }
-/// /need to learn more on this and what it does
+/// //////// This calles the csv and reads the files on the main method
     @Override
     public String toString() {
         return String.format(
