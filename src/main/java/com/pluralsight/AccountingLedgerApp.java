@@ -27,8 +27,8 @@ public class AccountingLedgerApp {
         System.out.println(" How would you like to Continue? ");
         System.out.println(
                 " D - Add A Deposit To Your Account\n" +  // done///
-                        " P - Make Payment (Debit)\n" +
-                        " L - Ledger\n" +
+                        " P - Make Payment (Debit)\n" +              // done
+                        " L - Ledger\n" +                   // done
                         " X - EXIT APP\n");                       ///done
         System.out.print("Enter Your option Here: ");
         String inputforhomescreeen = appscanner.nextLine().toUpperCase();
@@ -130,16 +130,15 @@ public class AccountingLedgerApp {
                 break;
 
             case "2":
-                //previousmonth();
-
+                previousmonth();
                 break;
 
             case "3":
-              // yeartodate();
+                yeartodate();
                 break;
 
             case "4":
-                  // previousyear();
+                  previousyear();
                 break;
 
             case "5":
@@ -221,7 +220,7 @@ public class AccountingLedgerApp {
     }
 
     ///  ===============================MAKE A PAYMENT============================================/////
-    public static void makeapayment() {
+    public static void makeapayment()  {
 
         Scanner makeapayemtn = new Scanner(System.in);
 
@@ -238,6 +237,8 @@ public class AccountingLedgerApp {
         float debtinput = makeapayemtn.nextFloat();
 
         debtinput = Math.round(debtinput * 100.f) / 100.f;
+
+
 
 
         transactions payment = new transactions(date, time, reasonunput, vendorinput, -debtinput);
@@ -322,29 +323,79 @@ public class AccountingLedgerApp {
 
     public static void monthtodate() {
 
-        ArrayList<transactions> ledger = loadledger();   /// Loading the array to access it ///
+        ArrayList<transactions> report = loadledger();             /// Loading the array to access it ///
 
-        LocalDate todaysdate = LocalDate.now();    ///LOCAL DATE. NOW ///
+        LocalDate todaysdate = LocalDate.now();                        ///LOCAL DATE. NOW ///
         LocalDate dayofmonth = todaysdate.withDayOfMonth(1);
 
 
-             ///  CHeck if Date is between the start of the month and the date ////
-        for (transactions dateofmonth : ledger) {
+             ///  Check if Date is between the start of the month and the date ////
+        for (transactions dateofmonth : report) {
             LocalDate date = dateofmonth.getdate();
             if (!date.isBefore(dayofmonth) && !date.isAfter(todaysdate)){
                 displayalllistfromclass(dateofmonth);     // SHOW IT
 
             }
         }
+    }
+
+    /// ++++++++++++++++++++++++++++++++++++++++previous month +++++++++++++++++++++++++++++++++
+    public static void previousmonth(){
+        ArrayList<transactions> report = loadledger();
+        LocalDate date = LocalDate.now();
+        LocalDate starofthemonth = date.minusMonths(1).withDayOfMonth(1);
+        LocalDate endofthemonth = starofthemonth.withDayOfMonth(starofthemonth.lengthOfMonth());
+
+        for (transactions month : report){
+            LocalDate datee = month.getdate();     /// THIS WILL GO CHECK AND LOOP THROUGH THE CLASS
+
+            if (!datee.isBefore(starofthemonth) && date.isAfter(starofthemonth) ){
+                displayalllistfromclass(month);
+            }
+        }
+    }
 
 
+    public static void yeartodate(){
+        ArrayList<transactions> report = loadledger();
+        LocalDate todaysdate = LocalDate.now();
+        LocalDate startoftheyear = todaysdate.withYear(1);   // Get January 1st of the current year //
+
+
+        // SHow Transactions between january first till today////
+
+        for(transactions yearcheck : report ){
+            LocalDate yearr = yearcheck.getdate();
+            if(!yearr.isBefore(startoftheyear) && !yearr.isAfter(todaysdate)){
+                displayalllistfromclass(yearcheck);
+            }
+
+        }
+    }
+
+
+    public static void previousyear(){
+        ArrayList<transactions> report = loadledger();
+
+        LocalDate todaysdate = LocalDate.now();
+
+        LocalDate startofyear = todaysdate.minusYears(1).withDayOfYear(1);
+        LocalDate endofyear = todaysdate.withDayOfYear(1).minusDays(1);
+
+        for(transactions year : report ){
+            LocalDate localDate = year.getdate();
+
+            if(!localDate.isBefore(startofyear) && !localDate.isAfter(endofyear)){
+                displayalllistfromclass(year);
+            }
+
+        }
     }
 
 
 
 
-
-/// /++++++++++++++++++++++++++++++++++++++++++++search by vendor +++++++++++++++++++++++++++++++++++++++//////
+////++++++++++++++++++++++++++++++++++++++++++++search by vendor +++++++++++++++++++++++++++++++++++++++//////
     public static void serachbyvendor(ArrayList<transactions> ledger, String serachbyvendorinput) {         // String Search by
         for (transactions search : ledger) {
             if (search.getvendor().toLowerCase().contains(serachbyvendorinput.toLowerCase())){
