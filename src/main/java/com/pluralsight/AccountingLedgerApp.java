@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class AccountingLedgerApp {
     /// Run method is running the mainmenuselector that runs the program itself///
     public static void run() {
-        System.out.println("=========  MoneyMind Finance Tracker ============ \n");
+        System.out.println("=========  Welcome to MoneyMind Finance Tracker ============ \n");
         while (true) {
             mainmenuselector();
         }
@@ -30,18 +30,18 @@ public class AccountingLedgerApp {
         String inputforhomescreeen = appscanner.nextLine().toUpperCase();
 
         switch (inputforhomescreeen) {
-            case "D":   //LINE 199 Review the BuffWriter Callingalltransactions  LINE 182
-                System.out.println(" +++++++++++++++++++++++++++ Deposit into your Account ++++++++++++++++++++++++++++++ ");
+            case "D":
+                System.out.println(" +++++++++++++++++++++++++++ Deposit into your Account ++++++++++++++++++++++++++++++ "); //LINE 199 Review the BuffWriter Callingalltransactions  LINE 182
                 adddedeposit();
                 break;
             case "P":
-                System.out.println(" -------------------------- Make A payment -------------------------------- ");
-                makeapayment();     // LINE 229
+                System.out.println(" -------------------------- Make A payment -------------------------------- ");            // LINE 229
+                makeapayment();
                 break;
 
             case "L":
-                System.out.println(" ============================= Ledger =========================================== ");
-                ledger();   /// LINE 66
+                System.out.println(" ============================= Ledger =========================================== ");       /// LINE 66
+                ledger();
                 break;
 
             case "X":
@@ -150,10 +150,10 @@ public class AccountingLedgerApp {
 
             case "0":
                 ledger();
-                System.out.println("============================= Ledger =======================================");
+                System.out.println("============================= Ledger =======================================");    // LINE 62
                 break;
             case "H":
-            case "7":
+            case "7":      // Giving it two possible ways to go home ///  // Means it will trigger both ways for the same action
                 mainmenuselector();
                 System.out.println(" ================================= Main Menu ================================== ");
                 break;
