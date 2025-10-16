@@ -8,16 +8,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
-
-
-
-
-
-
 public class AccountingLedgerApp {
     /// Run method is running the mainmenuselector that runs the program itself///
     public static void run() {
-        System.out.println("========= Welcome to the Accounting Ledger App ============ \n");
+        System.out.println("=========  MoneyMind Finance Tracker ============ \n");
         while (true) {
             mainmenuselector();
         }
@@ -46,6 +40,7 @@ public class AccountingLedgerApp {
                 break;
 
             case "L":
+                System.out.println(" ============================= Ledger =========================================== ");
                 ledger();   /// LINE 66
                 break;
 
@@ -55,6 +50,7 @@ public class AccountingLedgerApp {
 
 
         }
+
         System.out.println("\nPress ENTER to continue...\n");
         appscanner.nextLine();
         System.out.println();
@@ -77,38 +73,33 @@ public class AccountingLedgerApp {
         System.out.print("Enter Your Option Here:");
         String ledgerinput = ledgerscanner.nextLine().toUpperCase();
         switch (ledgerinput) {
-            case "A":                 // REVIEW LINE 258 for the method LoadLedger and LINE 292 VIEW LEDGER///
-                System.out.println("===================== All the transactions =========================");
+            case "A":
+                System.out.println("===================== All the transactions ========================="); // REVIEW LINE 258 for the method LoadLedger and LINE 292 VIEW LEDGER///
                 viewAllLedger();
                 break;
             case "D":
-                System.out.println("======================= POSITIVE Credit Entries ==============================");
-                System.out.println();     // REVIEW LINE 318
+                System.out.println("======================= POSITIVE Credit Entries ==============================");// REVIEW LINE 318
+                System.out.println();
                 ArrayList<transactions> positiveentry = loadledger();    // this loads all transactions in every case listed
                 showcreditpositive(positiveentry);                       /// method has a real data
                 break;
             case "P":
-                System.out.println("========================= NEGATIVE Debit Entries=============================");
-                System.out.println();  // LINE 304
+                System.out.println("========================= NEGATIVE Debit Entries=============================");// LINE 304
+                System.out.println();
                 ArrayList<transactions> negativeentery = loadledger();           // this loads all transactions in every case listed
                 showdebitesnegative(negativeentery);                            ///Method has a real data
                 break;
             case "R":
-                System.out.println("============================ Reports Screen ============================");
-                reports();          // LINE 115
+                System.out.println("============================ Reports Screen ============================");       // LINE 115
+                reports();
                 break;
             case "H":
-                mainmenuselector();    //LINE 26
+                mainmenuselector();
+                System.out.println("============================== Main Menu ======================================");   //LINE 26
                 break;
 
 
         }
-
-        System.out.println("\nPress ENTER to ledger menu...\n");
-        ledgerscanner.nextLine();
-        System.out.println();
-
-
     }
 
     public static void reports() {
@@ -129,44 +120,44 @@ public class AccountingLedgerApp {
         switch (reportsinput) {
             case "1":                          // LINE 334
                 monthtodate();
+                System.out.println("======================= Month To Date Transactions =============================== ");  // Line 338
                 break;
 
             case "2":
                 previousmonth();
+                System.out.println("============================ Previous Month ======================================= ");  // LINE 357
                 break;
 
             case "3":
                 yeartodate();
+                System.out.println(" ============================ Year To Date ========================================= "); // LINE 368
                 break;
 
             case "4":
+                System.out.println("============================== Previous Year ======================================= "); // Line 386
                 previousyear();
                 break;
 
             case "5":
-                System.out.println(" ============= SEARCH BY VENDOR ==============");     ///LINE 404
-                 // this loads all transactions in every case listed
                 serachbyvendor();
+                System.out.println(" ======================= SEARCH BY VENDOR ===============================");        ///LINE 404
                 break;
 
             case "6":
-                System.out.println("======================= Custom Search by dates ============================");
                 customsearch();
+                System.out.println("======================= Custom Search by dates ============================");       // LINE 421
                 break;
 
             case "0":
                 ledger();
+                System.out.println("============================= Ledger =======================================");
                 break;
             case "H":
             case "7":
                 mainmenuselector();
+                System.out.println(" ================================= Main Menu ================================== ");
                 break;
         }
-
-        System.out.println("\nPress ENTER to view reports Options  ..\n");
-        reportsscanner.nextLine();
-        System.out.println();
-
 
     }
 
@@ -258,8 +249,6 @@ public class AccountingLedgerApp {
     /////// READS TRANSACTIONS FROM CSV AND LOADS IT TO ARRAY LIST []/////
     public static ArrayList<transactions> loadledger() {
         ArrayList<transactions> ledger = new ArrayList<transactions>();
-
-
         try {
             BufferedReader bufferedReader = new BufferedReader(new FileReader("src/main/resources/transaction.csv"));
             String input;
@@ -292,14 +281,9 @@ public class AccountingLedgerApp {
 
     public static void viewAllLedger() {
         ArrayList<transactions> ledger = loadledger();
-
-        System.out.println("======== ALL TRANSACTIONS ========");
-
         for (transactions viewallitem : ledger) {
             System.out.println(viewallitem);
         }
-
-        System.out.println("==============================================");
     }
 
     public static void showdebitesnegative(ArrayList<transactions> ledger) {
