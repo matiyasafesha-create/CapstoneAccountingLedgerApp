@@ -9,8 +9,7 @@ public class Main {
         // to see how IntelliJ IDEA suggests fixing it.
 
 
-        public static void main(String[] args) throws InterruptedException {
-           // System.out.printf("Hello and welcome!");
+        public static void main(String[] args) {
             run();
         }
 

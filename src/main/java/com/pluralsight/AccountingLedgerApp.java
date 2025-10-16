@@ -6,15 +6,16 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Scanner;
 
 
 
 
 
-public class AccountingLedgerApp {
 
+
+public class AccountingLedgerApp {
+    /// Run method is running the mainmenuselector that runs the program itself///
     public static void run() {
         System.out.println("========= Welcome to the Accounting Ledger App ============ \n");
         while (true) {
@@ -35,28 +36,28 @@ public class AccountingLedgerApp {
         String inputforhomescreeen = appscanner.nextLine().toUpperCase();
 
         switch (inputforhomescreeen) {
-            case "D":
-                System.out.println(" ======== Deposit into your Account ===== ");
+            case "D":   //LINE 199 Review the BuffWriter Callingalltransactions  LINE 182
+                System.out.println(" +++++++++++++++++++++++++++ Deposit into your Account ++++++++++++++++++++++++++++++ ");
                 adddedeposit();
                 break;
             case "P":
-                System.out.println(" ++++++++++++ Make A payment ++++++++++++ ");
-                makeapayment();
+                System.out.println(" -------------------------- Make A payment -------------------------------- ");
+                makeapayment();     // LINE 229
                 break;
 
             case "L":
-                ledger();
+                ledger();   /// LINE 66
                 break;
 
             case "X":
-                exitapplication();
+                exitapplication(); // LINE 173
                 break;
 
 
         }
         System.out.println("\nPress ENTER to continue...\n");
         appscanner.nextLine();
-       System.out.println();
+        System.out.println();
 
 
     }
@@ -73,40 +74,39 @@ public class AccountingLedgerApp {
                         "H - Return to Home\n");
 
 
-
         System.out.print("Enter Your Option Here:");
         String ledgerinput = ledgerscanner.nextLine().toUpperCase();
         switch (ledgerinput) {
-            case "A":
-                System.out.println("=========Here are all the transactions==========");
+            case "A":                 // REVIEW LINE 258 for the method LoadLedger and LINE 292 VIEW LEDGER///
+                System.out.println("===================== All the transactions =========================");
                 viewAllLedger();
                 break;
             case "D":
-                System.out.println("Credit Entries");
-                System.out.println();
+                System.out.println("======================= POSITIVE Credit Entries ==============================");
+                System.out.println();     // REVIEW LINE 318
                 ArrayList<transactions> positiveentry = loadledger();    // this loads all transactions in every case listed
                 showcreditpositive(positiveentry);                       /// method has a real data
-
-
                 break;
             case "P":
-                System.out.println("Debit Entries");
-                System.out.println();
+                System.out.println("========================= NEGATIVE Debit Entries=============================");
+                System.out.println();  // LINE 304
                 ArrayList<transactions> negativeentery = loadledger();           // this loads all transactions in every case listed
-                showdebitesnegative(negativeentery);                                   ///Method has a real data
-
-
+                showdebitesnegative(negativeentery);                            ///Method has a real data
                 break;
             case "R":
-                System.out.println("Reports Screen");
-                reports();
+                System.out.println("============================ Reports Screen ============================");
+                reports();          // LINE 115
                 break;
             case "H":
-                mainmenuselector();
+                mainmenuselector();    //LINE 26
                 break;
 
 
         }
+
+        System.out.println("\nPress ENTER to ledger menu...\n");
+        ledgerscanner.nextLine();
+        System.out.println();
 
 
     }
@@ -127,7 +127,7 @@ public class AccountingLedgerApp {
         System.out.print("Enter Your Option Here: ");
         String reportsinput = reportsscanner.nextLine().toUpperCase();
         switch (reportsinput) {
-            case "1":
+            case "1":                          // LINE 334
                 monthtodate();
                 break;
 
@@ -140,15 +140,13 @@ public class AccountingLedgerApp {
                 break;
 
             case "4":
-                  previousyear();
+                previousyear();
                 break;
 
             case "5":
-                System.out.println(" ============= SEARCH BY VENDOR ==============");
-                System.out.println("Enter the Vendor Name? ");
-                String searchvendorinput = reportsscanner.nextLine();
-                ArrayList<transactions> ledger = loadledger();  // this loads all transactions in every case listed
-                serachbyvendor(ledger, searchvendorinput);
+                System.out.println(" ============= SEARCH BY VENDOR ==============");     ///LINE 404
+                 // this loads all transactions in every case listed
+                serachbyvendor();
                 break;
 
             case "6":
@@ -165,7 +163,7 @@ public class AccountingLedgerApp {
                 break;
         }
 
-        System.out.println("\nPress ENTER to continue...\n");
+        System.out.println("\nPress ENTER to view reports Options  ..\n");
         reportsscanner.nextLine();
         System.out.println();
 
@@ -177,27 +175,28 @@ public class AccountingLedgerApp {
         System.out.println("You Have Exited the Application GOOD BYE ");
         System.exit(0);
     }
-/// /Realized instead of rewriting the method again and again i will just create one method and call it
+/// /Realized instead of rewriting the method again, and again I will just create one method and call it
 
 
     /// //++++++++++++++++++++++++++++METHOD FOR WRITING ON A FILE +++++++++++++++++++++++++///////
 
     public static void callingcsvtransaction(transactions t) {  /// t is how the method receive
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter("src/main/resources/transaction.csv", true));
+            BufferedWriter writer = new BufferedWriter(new FileWriter("src/main/resources/transaction.csv", true)); //just add new transactions
             /// writer.write("Date|Time|Description|Amount"); ///HEADER???
             writer.newLine();
-            writer.write(t.tocsv());
-            writer.close();
+            writer.write(t.tocsv());               // writes to the CSV FILE calls the method .tocsv from class
+            writer.close();                                 // saves and coses
 
-        } catch (IOException e) {
-            System.out.println(" Unexpected Error Has Occurred ");
-            e.printStackTrace();
+        } catch (IOException e) { /// /cathes error in the program if any//
+            System.out.println(" Unexpected Error Has Occurred ");   //
+            e.printStackTrace(); // prints details on what exactly happened and why it cashed///
 
         }
     }
 
-    /// ++++++++++++++++++++++++++++++++++++++++++ ADDING DEPOSIT ++++++++++++++++++++++++++++++++++++++++++++++
+    /// PROMPT THE USER TO ADD WRITES A TRANSACTIONS //////
+    ///
     public static void adddedeposit() {
 
         Scanner adddeposit = new Scanner(System.in);
@@ -216,7 +215,7 @@ public class AccountingLedgerApp {
         float amount = adddeposit.nextFloat();
 
 
-        transactions deposit = new transactions(date, time, description, vendor, +amount);
+        transactions deposit = new transactions(date, time, description, vendor, +amount);   /// creates a transaction object
         amount = Math.round(amount * 100.0f) / 100.0f;/// rounded the float here
 
         System.out.println("Deposit Added Successfully!");
@@ -227,7 +226,8 @@ public class AccountingLedgerApp {
     }
 
     ///  ===============================MAKE A PAYMENT============================================/////
-    public static void makeapayment()  {
+    /// PROMPTS THE USER TO DEBIT / NEGATIVE TRANSACTIONS ARE WRITTEN ////
+    public static void makeapayment() {
 
         Scanner makeapayemtn = new Scanner(System.in);
 
@@ -246,8 +246,6 @@ public class AccountingLedgerApp {
         debtinput = Math.round(debtinput * 100.f) / 100.f;
 
 
-
-
         transactions payment = new transactions(date, time, reasonunput, vendorinput, -debtinput);
         System.out.println("PAYMENT WAS SUCCESSFUL!");
         System.out.println("Time:" + time);
@@ -257,7 +255,7 @@ public class AccountingLedgerApp {
 
     }
 
-    /// /////////// / ++++++++++++++++++++++++++++++++reader is complete+++++++++++++++++++++++++++++++++++++++++++++++++ /////
+    /////// READS TRANSACTIONS FROM CSV AND LOADS IT TO ARRAY LIST []/////
     public static ArrayList<transactions> loadledger() {
         ArrayList<transactions> ledger = new ArrayList<transactions>();
 
@@ -301,7 +299,7 @@ public class AccountingLedgerApp {
             System.out.println(viewallitem);
         }
 
-        System.out.println("==================================");
+        System.out.println("==============================================");
     }
 
     public static void showdebitesnegative(ArrayList<transactions> ledger) {
@@ -311,7 +309,7 @@ public class AccountingLedgerApp {
             }
         }
 
-
+        System.out.println("=============================================");
     }
 
     public static void showcreditpositive(ArrayList<transactions> ledger) {
@@ -320,8 +318,11 @@ public class AccountingLedgerApp {
                 displayalllistfromclass(credit);
             }
         }
+        System.out.println("==============================================");
+
     }
 
+    // Separation of concerns /// Smaller focused method
     public static void displayalllistfromclass(transactions t) {
         System.out.printf(t.getdate() + "|" + t.getTime() + "|" + t.getdiscription() + "| " +
                 t.getvendor() + "|" + t.getamount() + "\n");
@@ -333,13 +334,13 @@ public class AccountingLedgerApp {
         ArrayList<transactions> report = loadledger();             /// Loading the array to access it ///
 
         LocalDate todaysdate = LocalDate.now();                        ///LOCAL DATE. NOW ///
-        LocalDate dayofmonth = todaysdate.withDayOfMonth(1);
+        LocalDate dayofmonth = todaysdate.withDayOfMonth(1);       // first day of the current month //
 
 
-             ///  Check if Date is between the start of the month and the date ////
-        for (transactions dateofmonth : report) {
+        ///  Check if Date is between the start of the month and the date ////
+        for (transactions dateofmonth : report) {                    // goes each transaction
             LocalDate date = dateofmonth.getdate();
-            if (!date.isBefore(dayofmonth) && !date.isAfter(todaysdate)){
+            if (!date.isBefore(dayofmonth) && !date.isAfter(todaysdate)) {   ///  loop through each transaction before  today until start of this month//
                 displayalllistfromclass(dateofmonth);     // SHOW IT
 
             }
@@ -347,23 +348,23 @@ public class AccountingLedgerApp {
     }
 
     /// ++++++++++++++++++++++++++++++++++++++++previous month +++++++++++++++++++++++++++++++++
-    public static void previousmonth(){
+    public static void previousmonth() {
         ArrayList<transactions> report = loadledger();
         LocalDate date = LocalDate.now();
         LocalDate starofthemonth = date.minusMonths(1).withDayOfMonth(1);
         LocalDate endofthemonth = starofthemonth.withDayOfMonth(starofthemonth.lengthOfMonth());
 
-        for (transactions month : report){
+        for (transactions month : report) {
             LocalDate datee = month.getdate();     /// THIS WILL GO CHECK AND LOOP THROUGH THE CLASS
 
-            if (!datee.isBefore(starofthemonth) && date.isAfter(starofthemonth) ){
+            if (!datee.isBefore(starofthemonth) && date.isAfter(endofthemonth)) {
                 displayalllistfromclass(month);
             }
         }
     }
 
 
-    public static void yeartodate(){
+    public static void yeartodate() {
         ArrayList<transactions> report = loadledger();
         LocalDate todaysdate = LocalDate.now();
         LocalDate startoftheyear = todaysdate.withYear(1);   // Get January 1st of the current year //
@@ -371,9 +372,9 @@ public class AccountingLedgerApp {
 
         // SHow Transactions between january first till today////
 
-        for(transactions yearcheck : report ){
+        for (transactions yearcheck : report) {
             LocalDate yearr = yearcheck.getdate();
-            if(!yearr.isBefore(startoftheyear) && !yearr.isAfter(todaysdate)){
+            if (!yearr.isBefore(startoftheyear) && !yearr.isAfter(todaysdate)) {
                 displayalllistfromclass(yearcheck);
             }
 
@@ -381,7 +382,7 @@ public class AccountingLedgerApp {
     }
 
 
-    public static void previousyear(){
+    public static void previousyear() {
         ArrayList<transactions> report = loadledger();
 
         LocalDate todaysdate = LocalDate.now();
@@ -389,27 +390,36 @@ public class AccountingLedgerApp {
         LocalDate startofyear = todaysdate.minusYears(1).withDayOfYear(1);
         LocalDate endofyear = todaysdate.withDayOfYear(1).minusDays(1);
 
-        for(transactions year : report ){
+        for (transactions year : report) {
             LocalDate localDate = year.getdate();
 
-            if(!localDate.isBefore(startofyear) && !localDate.isAfter(endofyear)){
+            if (!localDate.isBefore(startofyear) && !localDate.isAfter(endofyear)) {
                 displayalllistfromclass(year);
             }
 
         }
     }
-////++++++++++++++++++++++++++++++++++++++++++++search by vendor +++++++++++++++++++++++++++++++++++++++//////
-    public static void serachbyvendor(ArrayList<transactions> ledger, String serachbyvendorinput) {         // String Search by
+
+    /// /++++++++++++++++++++++++++++++++++++++++++++search by vendor +++++++++++++++++++++++++++++++++++++++//////
+    public static void serachbyvendor() {
+        Scanner reports = new Scanner(System.in);
+        ArrayList<transactions> ledger = loadledger();
+
+
+        System.out.println("Enter the Vendor Name? ");
+        String searchvendorinput = reports.nextLine();
+
+
         for (transactions search : ledger) {
-            if (search.getvendor().toLowerCase().contains(serachbyvendorinput.toLowerCase())){
+            if (search.getvendor().toLowerCase().contains(searchvendorinput.toLowerCase())) {
                 displayalllistfromclass(search);
             }
         }
     }
 
-    public static void customsearch(){
-           ArrayList<transactions> reports = loadledger();
-            Scanner customscanner = new Scanner(System.in);
+    public static void customsearch() {
+        ArrayList<transactions> reports = loadledger();
+        Scanner customscanner = new Scanner(System.in);
 
 
         System.out.print("Enter Start Date (yyyy-mm-dd):");
@@ -427,25 +437,25 @@ public class AccountingLedgerApp {
         LocalDate enddate = null;                                      //LocalDate.parse(enddateinput);
 
 
-    for (transactions search : reports){
-        LocalDate classdate = search.getdate();
-        String description = search.getdiscription();
-        String vendor = search.getvendor();
-      double amount = search.getamount();
+        for (transactions search : reports) {
+            LocalDate classdate = search.getdate();
+            String description = search.getdiscription();
+            String vendor = search.getvendor();
+            double amount = search.getamount();
 
-        if(!classdate.isBefore(startdaate) && !classdate.isAfter(enddate) &&
-                description.contains(descriptioninput) && vendor.contains(vendorinput)
-                && amount == (amountinput) ){
-            displayalllistfromclass(search);//matching results shown
-            System.out.println(search);  // move inside to show matching record only
-        }else {
-            System.out.println(" WE couldn't find a match please enter it again!! ");
-        }
+            if (!classdate.isBefore(startdaate) && !classdate.isAfter(enddate) &&
+                    description.contains(descriptioninput) && vendor.contains(vendorinput)
+                    && amount == (amountinput)) {
+                displayalllistfromclass(search);//matching results shown
+                System.out.println(search);  // move inside to show matching record only
+            } else {
+                System.out.println(" WE couldn't find a match please enter it again!! ");
+            }
         }
     }
 
-
 }
+
 
 
 

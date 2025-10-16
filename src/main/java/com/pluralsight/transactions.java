@@ -10,6 +10,8 @@ private String description ;
 private String vendor ;
 private double amount;
 
+// constructor //  used to create a transactions object with all required information this key word assigns values passed //
+/// it runs automatically when I create a new transactions object.
 
 public transactions (LocalDate date,LocalTime time, String description, String vendor, double amount){
     this.date = date;
@@ -62,16 +64,16 @@ public transactions (LocalDate date,LocalTime time, String description, String v
         this.amount = amount;
     }
 
-    // this is for transaction file for bufferdwriter to access the calss check and write it //
+    // this is for transaction file for bufferdwriter to access the class check and write it //
 
-
+///  method converts a transaction object into a single line of text separated by | single line of text
     public String tocsv(){
     return date + "|" + time + "|" + description+ "|" + vendor + "|" + amount;
     }
 /// //////// This calles the csv and reads the files on the main method
     @Override
-    public String toString() {
-        return String.format(
+    public String toString() {     // this makes it readable string when object is printed it shows date time description vendor amount
+        return String.format(             // instead of random memory/ nice readable line.
                 "DATE: %s |TIME: %s | DESCRIPTION: %s | VENDOR: %s |Amount: $%.2f",
                 date, time, description, vendor, amount);
     }
